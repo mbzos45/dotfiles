@@ -16,6 +16,7 @@ sudo apt install -y  --no-install-recommends \
     gcc \
     make \
     wget \
+    sccache \
     mold
 
 # rustup のインストール
@@ -31,34 +32,40 @@ else
 fi
 
 rustup default stable
+rustup completions bash > $HOME/.local/share/bash-completion/completions/rustup
+rustup completions zsh > $HOME/.zfunc/_rustup
 
 # cargo-binstall の導入 (Rust製ツールの高速インストールのために便利)
 if ! command -v cargo-binstall &>/dev/null; then
     echo "Installing cargo-binstall..."
     curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
+    cargo binstall -y cargo-update
 fi
 
 # sheldon (plugin manager)
 if ! command -v sheldon &>/dev/null; then
-    cargo binstall -y sheldon
+    cargo binstall -y sheldon || cargo install sheldon
+    sheldon completions bash > $HOME/.local/share/bash-completion/completions/sheldon
+    sheldon completions --shell zsh > $HOME/.zfunc/_sheldon
+fi
+
+if [[ "${INSTALL_STARSHIP:-0}" == "1" ]]; then
+    if ! command -v starship &>/dev/null; then
+        echo "Installing starship..."
+        cargo binstall -y starship || cargo install starship
+        starship completions bash > $HOME/.local/share/bash-completion/completions/starship
+        starship completions zsh > $HOME/.zfunc/_starship
+    fi
 fi
 
 # mise (version manager) from apt repo
 if ! command -v mise &>/dev/null; then
+    echo "Installing mise..."
     sudo install -dm 755 /etc/apt/keyrings
     curl -fSs https://mise.en.dev/gpg-key.pub | sudo tee /etc/apt/keyrings/mise-archive-keyring.asc 1> /dev/null
     echo "deb [signed-by=/etc/apt/keyrings/mise-archive-keyring.asc] https://mise.en.dev/deb stable main" | sudo tee /etc/apt/sources.list.d/mise.list
     sudo apt update -y
     sudo apt install -y mise
-fi
-
-if [ -f "$HOME/.zshrc" ]; then
-    echo "Backing up existing .zshrc to .zshrc.bak"
-    mv "$HOME/.zshrc" "$HOME/.zshrc.bak"
-fi
-if [ -f "$HOME/.zshrc.local" ]; then
-    echo "Backing up existing .zshrc.local to .zshrc.local.bak"
-    mv "$HOME/.zshrc.local" "$HOME/.zshrc.local.bak"
 fi
 
 wget -O "$HOME/.zshrc"      https://grml.org/console/zshrc
@@ -68,6 +75,6 @@ echo 'if [ -f "$HOME/.config/zsh/local.zsh" ]; then
   source "$HOME/.config/zsh/local.zsh"
 fi' >> "$HOME/.zshrc.local"
 
-
+echo "alias p='sudo apt update ; sudo apt upgrade; rustup self-update; rustup update ; cargo install-update -a mise up'" >> "$DOTFILES_CONFIG_DIR/zsh/lazy.zsh"
 
 echo "Ubuntu setup script finished."
