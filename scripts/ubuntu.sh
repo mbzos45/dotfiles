@@ -36,6 +36,8 @@ rustup default stable
 rustup completions bash > $HOME/.local/share/bash-completion/completions/rustup
 rustup completions zsh > $HOME/.zfunc/_rustup
 
+mkdir -p "$HOME/.cargo/bin"
+
 # cargo-binstall の導入 (Rust製ツールの高速インストールのために便利)
 if ! command -v cargo-binstall &>/dev/null; then
     echo "Installing cargo-binstall..."
