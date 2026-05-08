@@ -45,16 +45,16 @@ fi
 # sheldon (plugin manager)
 if ! command -v sheldon &>/dev/null; then
     cargo binstall -y sheldon || cargo install sheldon
-    sheldon completions bash > $HOME/.local/share/bash-completion/completions/sheldon
-    sheldon completions --shell zsh > $HOME/.zfunc/_sheldon
+    $HOME/.cargo/bin/sheldon completions bash > $HOME/.local/share/bash-completion/completions/sheldon
+    $HOME/.cargo/bin/sheldon completions --shell zsh > $HOME/.zfunc/_sheldon
 fi
 
 if [[ "${INSTALL_STARSHIP:-0}" == "1" ]]; then
     if ! command -v starship &>/dev/null; then
         echo "Installing starship..."
         cargo binstall -y starship || cargo install starship
-        starship completions bash > $HOME/.local/share/bash-completion/completions/starship
-        starship completions zsh > $HOME/.zfunc/_starship
+        $HOME/.cargo/bin/starship completions bash > $HOME/.local/share/bash-completion/completions/starship
+        $HOME/.cargo/bin/starship completions zsh > $HOME/.zfunc/_starship
     fi
 fi
 

@@ -78,7 +78,7 @@ if ! echo "$PATH" | grep -q "$HOME/.local/bin"; then
   source "$HOME/.bashrc"
 fi
 
-mkdir -p $HOME/.local/share/bash-completion
+mkdir -p $HOME/.local/share/bash-completion/completions
 mkdir -p $HOME/.zfunc
 
 if [ -f "$HOME/.zshrc" ]; then

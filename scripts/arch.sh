@@ -5,17 +5,17 @@ sudo pacman -Rsn --noconfirm $(pacman -Qq | grep '^cargo-')
 
 sudo pacman -Syu --noconfirm \
     bash-completion \
-    grml-zsh-config \
+    zsh \
     zsh-completions \
     fzf \
     bat \
     zoxide \
+    wget \
     curl \
     wget \
     git \
     base-devel \
     rustup \
-    mise \
     sheldon \
     sccache \
     mold
@@ -46,12 +46,17 @@ fi
 
 if ! command -v mise &>/dev/null; then
     curl https://mise.run | sh
-    mise completion bash > $HOME/.local/share/bash-completion/completions/mise
-    mise completion zsh > $HOME/.zfunc/_mise
+    $HOME/.local/bin/mise completion bash > $HOME/.local/share/bash-completion/completions/mise
+    $HOME/.local/bin/mise completion zsh > $HOME/.zfunc/_mise
 fi
 
-echo "alias p='sudo pacman -Syu; paru -Sua; rustup update ; cargo install-update -a ; mise self-update; mise up'" >> "$DOTFILES_CONFIG_DIR/zsh/lazy.zsh"
+wget -O "$HOME/.zshrc"      https://grml.org/console/zshrc
+wget -O "$HOME/.zshrc.local" https://grml.org/console/zshrc.local
 
 echo 'if [ -f "$HOME/.config/zsh/local.zsh" ]; then
   source "$HOME/.config/zsh/local.zsh"
 fi' >> "$HOME/.zshrc"
+
+echo "alias p='sudo pacman -Syu; paru -Sua; rustup update ; cargo install-update -a ; mise self-update; mise up'" >> "$DOTFILES_CONFIG_DIR/zsh/lazy.zsh"
+
+echo "Arch setup script finished."
