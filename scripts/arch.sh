@@ -9,6 +9,7 @@ sudo pacman -Syu --noconfirm \
     zsh-completions \
     fzf \
     bat \
+    eza \
     zoxide \
     wget \
     curl \
@@ -57,6 +58,6 @@ echo 'if [ -f "$HOME/.config/zsh/local.zsh" ]; then
   source "$HOME/.config/zsh/local.zsh"
 fi' >> "$HOME/.zshrc"
 
-echo "alias p='sudo pacman -Syu; paru -Sua; rustup update ; cargo install-update -a ; mise self-update; mise up'" >> "$DOTFILES_CONFIG_DIR/zsh/lazy.zsh"
+echo "alias p='sudo pacman -Syu; sh -c \"paru -Sua\"; rustup update ; cargo install-update -a ; mise self-update; mise up'" >> "$DOTFILES_CONFIG_DIR/zsh/lazy.zsh"
 
 echo "Arch setup script finished."

@@ -12,6 +12,11 @@ setopt hist_ignore_all_dups
 setopt hist_reduce_blanks
 zstyle ":completion:*:commands" rehash 1
 
+path=($HOME/.local/bin(N-/) $path)
+
+# cargo
+path=($HOME/.cargo/bin(N-/) $path)
+
 # mise
 export MISE_CONFIG_DIR="$HOME/.config/mise"
 export MISE_GLOBAL_CONFIG_FILE="$MISE_CONFIG_DIR/config.toml"
@@ -25,4 +30,3 @@ if type "mise" &>/dev/null; then
 	unset mise_path
 	unset mise_cache
 fi
-path=($HOME/.local/bin(N-/) $path)

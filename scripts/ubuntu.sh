@@ -17,6 +17,7 @@ sudo apt install -y  --no-install-recommends \
     make \
     wget \
     sccache \
+    eza \
     mold
 
 # rustup のインストール
@@ -66,6 +67,8 @@ if ! command -v mise &>/dev/null; then
     echo "deb [signed-by=/etc/apt/keyrings/mise-archive-keyring.asc] https://mise.en.dev/deb stable main" | sudo tee /etc/apt/sources.list.d/mise.list
     sudo apt update -y
     sudo apt install -y mise
+    mise completion bash > $HOME/.local/share/bash-completion/completions/mise
+    mise completion zsh > $HOME/.zfunc/_mise
 fi
 
 wget -O "$HOME/.zshrc"      https://grml.org/console/zshrc
